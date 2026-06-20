@@ -1,0 +1,623 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Historical Data | SeismicWatch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#55442d",
+                        "secondary-container": "#e1e3e4",
+                        "on-tertiary-fixed": "#261906",
+                        "on-secondary-fixed": "#191c1d",
+                        "on-primary-fixed": "#141b2b",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#151c27",
+                        "on-secondary-container": "#626566",
+                        "secondary-fixed": "#e1e3e4",
+                        "primary-fixed-dim": "#c0c6db",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#45464c",
+                        "primary-container": "#141b2b",
+                        "outline-variant": "#c6c6cd",
+                        "surface-container-highest": "#dce2f3",
+                        "inverse-primary": "#c0c6db",
+                        "outline": "#76777d",
+                        "surface-container-high": "#e2e8f8",
+                        "surface": "#f9f9ff",
+                        "primary": "#000000",
+                        "tertiary-container": "#261906",
+                        "secondary-fixed-dim": "#c5c7c8",
+                        "tertiary-fixed": "#f9debf",
+                        "on-primary-container": "#7d8497",
+                        "secondary": "#5c5f60",
+                        "on-primary": "#ffffff",
+                        "on-background": "#151c27",
+                        "tertiary": "#000000",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#dce2f3",
+                        "surface-container": "#e7eefe",
+                        "on-tertiary-container": "#968065",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f0f3ff",
+                        "surface-dim": "#d3daea",
+                        "on-secondary-fixed-variant": "#454748",
+                        "primary-fixed": "#dce2f7",
+                        "inverse-surface": "#2a313d",
+                        "background": "#f9f9ff",
+                        "tertiary-fixed-dim": "#dcc2a4",
+                        "on-primary-fixed-variant": "#404758",
+                        "surface-tint": "#575e70",
+                        "inverse-on-surface": "#ebf1ff",
+                        "surface-bright": "#f9f9ff",
+                        "alert-green": "#10B981",
+                        "alert-yellow": "#FBBF24",
+                        "alert-orange": "#F97316",
+                        "alert-red": "#EF4444"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "margin-x": "32px",
+                        "stack-lg": "24px",
+                        "card-padding": "24px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-surface border-b border-outline-variant shadow-sm h-16 w-full">
+<div class="flex justify-between items-center w-full px-margin-x h-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary">SeismicWatch</span>
+<nav class="hidden md:flex items-center gap-6 h-full">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="Dashboard.html">Global Trends</a>
+
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md font-semibold" href="Historical_Data.html">Historical Data</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group hidden md:block">
+<div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-sm">search</span>
+</div>
+<input class="bg-surface-container-low border border-outline-variant rounded-full pl-10 pr-4 py-1.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all w-48 lg:w-64" placeholder="Search data..." type="text">
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female seismic researcher in a high-tech academic lab setting. She has a knowledgeable and focused expression, wearing professional attire. The background features blurred digital screens with seismic wave patterns and earthquake data visualizations. The lighting is clean and clinical, suggesting a modern scientific research environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdYh_Vb6LIRM4shlBH2PvkZ-0J0cuj5XpqbgEga7q1fSaAnq_M7nWLJs6n3GWjoLn2_e6rUul8OZR78hDZVx3GCBl8H2_G4hoZoFell2sh133S0jCFdZyAQmO54Lt6dvzA9C9yy8bLBnH1F11BfqIc9BCRhEPras68Z2GncO0GSN1JpRk7rU3dn_S6-MleNqLLf1QZHFXCd09D1QdT4Hjvcu67iQqeB9-0_9arTpjt44s3H9L7WVO45mBMphGoSoxgTUqqUj3CzA">
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-x py-stack-lg space-y-stack-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Historical Data</h1>
+<p class="text-on-surface-variant font-body-md mt-1">Browse all 1,256 recorded earthquake events across the global observation network.</p>
+</div>
+<div class="bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                1,256 total records
+            </div>
+</div>
+<!-- Toolbar Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg shadow-sm p-6">
+<div class="flex flex-col lg:flex-row gap-gutter items-stretch lg:items-center">
+<!-- Search -->
+<div class="flex-grow relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg pl-12 pr-4 py-2.5 focus:ring-2 focus:ring-primary-container focus:border-transparent" placeholder="Search records..." type="text">
+</div>
+<!-- Filters Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 pr-10 focus:ring-2 focus:ring-primary-container focus:border-transparent font-body-md">
+<option>Alert Level: All</option>
+<option>Green</option>
+<option>Yellow</option>
+<option>Orange</option>
+<option>Red</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+</div>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 pr-10 focus:ring-2 focus:ring-primary-container focus:border-transparent font-body-md">
+<option>Sort by: Significance</option>
+<option>Magnitude</option>
+<option>Depth</option>
+<option>CDI</option>
+<option>MMI</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">sort</span>
+</div>
+<button class="bg-surface border border-outline text-on-surface font-semibold py-2.5 px-6 rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                        Export CSV
+                    </button>
+</div>
+</div>
+</section>
+<!-- Data Table Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg shadow-md overflow-hidden">
+<!-- Table Header Metadata -->
+<div class="p-6 flex justify-between items-center bg-white border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-on-surface">All Records</h2>
+<div class="font-label-md text-label-md text-on-surface-variant bg-surface-container-low px-3 py-1 rounded">
+                    Showing 1–25 of 1,256
+                </div>
+</div>
+<!-- Responsive Table Wrapper -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#F9FAFB] border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">#</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">Magnitude (Mw)</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">Depth (km)</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">CDI</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">MMI</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">Significance</th>
+<th class="px-6 py-4 font-label-md text-label-md text-outline uppercase tracking-wider">Alert Level</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#F3F4F6]">
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="px-6 py-4 bg-white border-t border-outline-variant flex flex-col sm:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-3">
+<span class="text-on-surface-variant font-body-md">Rows per page</span>
+<select class="bg-surface-container-low border border-outline-variant rounded px-2 py-1 text-sm font-label-md">
+<option>25</option>
+<option>50</option>
+<option>100</option>
+</select>
+</div>
+<div class="flex items-center gap-1">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">chevron_left</button>
+<div class="flex items-center gap-1">
+<button class="w-10 h-10 rounded-lg flex items-center justify-center font-label-md text-on-primary bg-primary shadow-md">1</button>
+<button class="w-10 h-10 rounded-lg flex items-center justify-center font-label-md text-on-surface hover:bg-surface-container-low transition-colors">2</button>
+<button class="w-10 h-10 rounded-lg flex items-center justify-center font-label-md text-on-surface hover:bg-surface-container-low transition-colors">3</button>
+<span class="px-2 text-outline">...</span>
+<button class="w-10 h-10 rounded-lg flex items-center justify-center font-label-md text-on-surface hover:bg-surface-container-low transition-colors">51</button>
+</div>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">chevron_right</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="mt-auto border-t border-outline-variant bg-surface-container-lowest">
+<div class="w-full py-stack-md px-margin-x flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto gap-4">
+<div class="flex flex-col md:flex-row items-center gap-6">
+<span class="font-label-md text-label-md font-black text-on-surface">SeismicWatch</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Global Seismic Research Institute. All rights reserved.</span>
+</div>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Data Integrity Protocol</a>
+</div>
+</div>
+</footer>
+<script src="eq_data.js"></script>
+<script>
+    /**
+     * =========================================================================
+     * SeismicWatch — Historical Data Table Controller
+     * =========================================================================
+     * This script dynamically renders the earthquake data table from the
+     * EARTHQUAKE_DATA array loaded via eq_data.js. It supports:
+     *   - Filtering by alert level
+     *   - Full-text search across all fields
+     *   - Sorting by any numeric column (toggleable asc/desc)
+     *   - Client-side pagination with configurable rows per page
+     *   - CSV export of the current filtered dataset
+     *   - Row click highlighting
+     *
+     * No external libraries are used — pure vanilla JavaScript.
+     * =========================================================================
+     */
+
+    // ── Alert color hex map (for reference; Tailwind classes handle display) ──
+    const ALERT_COLORS = {
+        green:  '#10B981',
+        yellow: '#FBBF24',
+        orange: '#F97316',
+        red:    '#EF4444'
+    };
+
+    // ── State variables ──────────────────────────────────────────────────────
+    let currentFilter  = 'all';    // 'all', 'green', 'yellow', 'orange', 'red'
+    let currentSort    = 'sig';    // 'sig', 'magnitude', 'depth', 'cdi', 'mmi'
+    let sortAscending  = false;    // default: descending order
+    let currentPage    = 1;        // current pagination page
+    let rowsPerPage    = 25;       // rows shown per page
+    let searchQuery    = '';       // user search string (lowercase)
+
+    // ── DOM references ───────────────────────────────────────────────────────
+    const tbody             = document.querySelector('tbody');
+    const showingLabel      = document.querySelector('.p-6.flex.justify-between .font-label-md.text-label-md');
+    const paginationWrapper = document.querySelector('.px-6.py-4.bg-white .flex.items-center.gap-1');
+    const pageNumbersDiv    = paginationWrapper.querySelector('.flex.items-center.gap-1');
+    const chevronLeft       = paginationWrapper.querySelector('button:first-child');
+    const chevronRight      = paginationWrapper.querySelector('button:last-child');
+
+    // Toolbar controls
+    const searchInput       = document.querySelector('input[placeholder="Search records..."]');
+    const alertSelect       = document.querySelectorAll('section select')[0]; // Alert Level dropdown
+    const sortSelect        = document.querySelectorAll('section select')[1]; // Sort dropdown
+    const rowsPerPageSelect = document.querySelector('.px-6.py-4.bg-white select');
+    const exportBtn         = document.querySelector('button.bg-surface.border.border-outline');
+
+    // =====================================================================
+    // 1. getFilteredData() — Filter, search, and sort the dataset
+    // =====================================================================
+    /**
+     * Applies the current filter, search query, and sort settings to
+     * EARTHQUAKE_DATA and returns a new sorted array.
+     * @returns {Array} The filtered and sorted earthquake records
+     */
+    function getFilteredData() {
+        let data = EARTHQUAKE_DATA;
+
+        // Step 1: Filter by alert level if not 'all'
+        if (currentFilter !== 'all') {
+            data = data.filter(item => item.alert === currentFilter);
+        }
+
+        // Step 2: Filter by search query — check every field as a string
+        if (searchQuery) {
+            data = data.filter(item => {
+                return Object.values(item).some(val =>
+                    String(val).toLowerCase().includes(searchQuery)
+                );
+            });
+        }
+
+        // Step 3: Sort by the selected column
+        data = [...data].sort((a, b) => {
+            const valA = a[currentSort];
+            const valB = b[currentSort];
+            // Numeric comparison for all sortable columns
+            if (sortAscending) {
+                return valA - valB;
+            } else {
+                return valB - valA;
+            }
+        });
+
+        return data;
+    }
+
+    // =====================================================================
+    // 2. renderTable() — Build and inject table rows for the current page
+    // =====================================================================
+    /**
+     * Renders the visible rows in the <tbody> based on current page,
+     * and updates the "Showing X–Y of Z" metadata label.
+     */
+    function renderTable() {
+        const filteredData = getFilteredData();
+        const totalRecords = filteredData.length;
+
+        // Clamp currentPage to valid range (edge case: filter empties results)
+        const totalPages = Math.max(1, Math.ceil(totalRecords / rowsPerPage));
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        // Compute pagination slice
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex   = Math.min(startIndex + rowsPerPage, totalRecords);
+        const pageData   = filteredData.slice(startIndex, endIndex);
+
+        // Build HTML rows
+        let html = '';
+        if (pageData.length === 0) {
+            // Empty state: show a friendly message spanning all columns
+            html = `<tr><td colspan="7" class="px-6 py-12 text-center text-on-surface-variant font-body-md">No records match your current filters.</td></tr>`;
+        } else {
+            pageData.forEach((item, index) => {
+                const rowNumber = startIndex + index + 1;
+                const color     = item.alert;                   // e.g. 'green'
+                const colorUpper = color.toUpperCase();         // e.g. 'GREEN'
+
+                html += `<tr class="hover:bg-surface-container-low transition-colors">
+  <td class="px-6 py-4 font-label-sm text-label-sm text-outline">${rowNumber}</td>
+  <td class="px-6 py-4 font-label-md text-label-md text-on-surface font-bold">${item.magnitude}</td>
+  <td class="px-6 py-4 font-label-md text-label-md text-on-surface">${item.depth}</td>
+  <td class="px-6 py-4 font-label-md text-label-md text-on-surface">${item.cdi}</td>
+  <td class="px-6 py-4 font-label-md text-label-md text-on-surface">${item.mmi}</td>
+  <td class="px-6 py-4 font-label-md text-label-md text-on-surface">${item.sig}</td>
+  <td class="px-6 py-4">
+    <span class="bg-alert-${color}/10 text-alert-${color} px-3 py-1 rounded-full font-label-sm text-label-sm font-bold border border-alert-${color}/20">${colorUpper} ALERT</span>
+  </td>
+</tr>`;
+            });
+        }
+
+        // Inject into DOM
+        tbody.innerHTML = html;
+
+        // Update "Showing X–Y of Z" label
+        if (totalRecords === 0) {
+            showingLabel.textContent = 'Showing 0 of 0';
+        } else {
+            showingLabel.textContent = `Showing ${startIndex + 1}\u2013${endIndex} of ${totalRecords.toLocaleString()}`;
+        }
+
+        // Also re-render pagination buttons
+        renderPagination();
+    }
+
+    // =====================================================================
+    // 3. renderPagination() — Build page number buttons with ellipsis
+    // =====================================================================
+    /**
+     * Generates pagination controls: numbered page buttons (max 5 visible
+     * plus ellipsis) and wires up click handlers for navigation.
+     */
+    function renderPagination() {
+        const filteredData = getFilteredData();
+        const totalPages   = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
+
+        // Helper: create a page button element
+        function makePageButton(pageNum, isActive) {
+            const btn = document.createElement('button');
+            btn.textContent = pageNum;
+            if (isActive) {
+                btn.className = 'w-10 h-10 rounded-lg flex items-center justify-center font-label-md text-on-primary bg-primary shadow-md';
+            } else {
+                btn.className = 'w-10 h-10 rounded-lg flex items-center justify-center font-label-md text-on-surface hover:bg-surface-container-low transition-colors';
+            }
+            btn.addEventListener('click', () => {
+                currentPage = pageNum;
+                renderTable();
+            });
+            return btn;
+        }
+
+        // Helper: create an ellipsis span
+        function makeEllipsis() {
+            const span = document.createElement('span');
+            span.className = 'px-2 text-outline';
+            span.textContent = '...';
+            return span;
+        }
+
+        // Clear existing page buttons
+        pageNumbersDiv.innerHTML = '';
+
+        // Determine which page numbers to show
+        let pages = [];
+        if (totalPages <= 7) {
+            // Show all pages
+            for (let i = 1; i <= totalPages; i++) pages.push(i);
+        } else {
+            // Always show first page
+            pages.push(1);
+
+            // Determine middle range: currentPage-1, currentPage, currentPage+1
+            let start = Math.max(2, currentPage - 1);
+            let end   = Math.min(totalPages - 1, currentPage + 1);
+
+            // Ensure at least 3 middle pages when possible
+            if (start === 2) end = Math.min(totalPages - 1, 4);
+            if (end === totalPages - 1) start = Math.max(2, totalPages - 3);
+
+            // Add leading ellipsis if gap exists
+            if (start > 2) pages.push('...');
+
+            for (let i = start; i <= end; i++) pages.push(i);
+
+            // Add trailing ellipsis if gap exists
+            if (end < totalPages - 1) pages.push('...');
+
+            // Always show last page
+            pages.push(totalPages);
+        }
+
+        // Render buttons into the container
+        pages.forEach(p => {
+            if (p === '...') {
+                pageNumbersDiv.appendChild(makeEllipsis());
+            } else {
+                pageNumbersDiv.appendChild(makePageButton(p, p === currentPage));
+            }
+        });
+
+        // Chevron left (previous page) handler
+        chevronLeft.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        };
+
+        // Chevron right (next page) handler
+        chevronRight.onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        };
+    }
+
+    // =====================================================================
+    // 4. Event handler wiring
+    // =====================================================================
+
+    /**
+     * Search input — filters data as the user types.
+     * Only the toolbar search input is wired (not the header cosmetic one).
+     */
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        currentPage = 1; // Reset to first page on new search
+        renderTable();
+    });
+
+    /**
+     * Alert Level dropdown — filters by earthquake alert severity.
+     * Maps display text to internal filter values.
+     */
+    alertSelect.addEventListener('change', () => {
+        const val = alertSelect.value.trim();
+        // Map dropdown text to filter key
+        const mapping = {
+            'Alert Level: All': 'all',
+            'Green':  'green',
+            'Yellow': 'yellow',
+            'Orange': 'orange',
+            'Red':    'red'
+        };
+        currentFilter = mapping[val] || 'all';
+        currentPage = 1; // Reset pagination
+        renderTable();
+    });
+
+    /**
+     * Sort dropdown — changes the sort column.
+     * Selecting the same field again toggles ascending/descending.
+     */
+    let lastSortSelection = 'sig'; // Track previous sort to detect toggle
+    sortSelect.addEventListener('change', () => {
+        const val = sortSelect.value.trim();
+        // Map dropdown text to data field name
+        const mapping = {
+            'Sort by: Significance': 'sig',
+            'Significance':          'sig',
+            'Magnitude':             'magnitude',
+            'Depth':                 'depth',
+            'CDI':                   'cdi',
+            'MMI':                   'mmi'
+        };
+        const newSort = mapping[val] || 'sig';
+
+        // Toggle direction if same field is selected again
+        if (newSort === lastSortSelection) {
+            sortAscending = !sortAscending;
+        } else {
+            sortAscending = false; // Default to descending for new column
+        }
+        currentSort = newSort;
+        lastSortSelection = newSort;
+        currentPage = 1;
+        renderTable();
+    });
+
+    /**
+     * Rows per page dropdown — adjusts how many rows are shown per page.
+     */
+    rowsPerPageSelect.addEventListener('change', () => {
+        rowsPerPage = parseInt(rowsPerPageSelect.value, 10);
+        currentPage = 1; // Reset to first page
+        renderTable();
+    });
+
+    /**
+     * Export CSV button — downloads the full filtered dataset as a CSV file.
+     * Exports all filtered/sorted records, not just the current page.
+     */
+    exportBtn.addEventListener('click', () => {
+        const data = getFilteredData();
+
+        // Build CSV content with header row
+        let csv = 'Magnitude,Depth,CDI,MMI,Significance,Alert\n';
+        data.forEach(item => {
+            csv += `${item.magnitude},${item.depth},${item.cdi},${item.mmi},${item.sig},${item.alert}\n`;
+        });
+
+        // Create a downloadable Blob and trigger download
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url  = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href     = url;
+        link.download = 'earthquake_data_export.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    });
+
+    // =====================================================================
+    // 5. Row click highlighting (event delegation on tbody)
+    // =====================================================================
+    /**
+     * Uses event delegation on the <tbody> element so dynamically rendered
+     * rows are automatically handled without re-binding listeners.
+     */
+    tbody.addEventListener('click', (e) => {
+        // Find the <tr> that was clicked (bubble up from any child)
+        const clickedRow = e.target.closest('tr');
+        if (!clickedRow) return;
+
+        // Remove highlight from all rows first
+        tbody.querySelectorAll('tr').forEach(r => {
+            r.classList.remove('bg-surface-container-low', 'ring-1', 'ring-primary/20');
+        });
+
+        // Apply highlight to the clicked row
+        clickedRow.classList.add('bg-surface-container-low', 'ring-1', 'ring-primary/20');
+    });
+
+    // =====================================================================
+    // 6. Initial render — populate the table on page load
+    // =====================================================================
+    renderTable();
+</script>
+
+
+</body></html>
